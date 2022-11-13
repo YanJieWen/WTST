@@ -14,16 +14,38 @@ Pedestrians trajectory prediction-Tensorflow  Implementation
 
 ## Background
 
-
-
-## Background
-
-Not only is spatiotemporal traffic prediction one of the important tasks of intelligent transportation system(ITS), but is an important part of urban computing. It is of great significance to aleviate traffic congesetion and improve urban operatiion. In recent years, Transformer has achieved great success in natural language processing(NLP) and computer vision(CV), so this paper is an extension of Transformer architecture and applies it to spatiotemporal traffic prediction. Specifically, our model respects the original framework of Transformer and is composed of encoder and decoder. The encoder is responsible for feature extraction of historical traffic data, and the decoder is responsible for autoregressive prediction of future traffic conditions.  Our model mainly includes three types of attention modules: multi-head temporal self attention(MTA), multi-head spatio self attention(MSA), and multi-head interactive attention(MTIA),in which MTA captures the features of historical traffic data in the temporal dimension, MSA captures the features of spatial dimension, and MTIA captures the features of historical-future temporal dimension. Moreover, because the original transformer is composed of dense layers, temporal and spatial essentially share parameters when performing attention operations, which ignores the heterogeneity of spatiotemporal. Therefore, the spatiotemporal embedding layer is introduced to guide the attention mechanism through meta learning. It encodes temporal and spatial through Time2Vec(T2V) and Node2Vec(N2V), and couples them into spatiotemporal embedding blocks. In addtion, the multi graph consists of accessibility graph and similarity graph is adopted to perform MSA, aiming to make full use of spatial domain knowledge. We recombine the attention module and the feed forward layer to form the Sandwich-Transformer. The model has carried out extensive experiments on two public data, and the results show that our model is superior to several most advanced methods. 
+As a perception algorithm, trajectory prediction algorithm plays an important role in autonomous
+driving and monitoring systems. Accurately predicting pedestrian movement information in
+the future can effectively ensure pedestrian traffic safety and reduce the risk of infrastructure.
+We propose a novel pedestrian trajectory prediction model based on Transformer framework
+called WTST aiming to solve the challenges of multi-agent, dynamic, partially observable and
+stochastic when it comes to pedestrian trajectory prediction. For the partially observable, a world
+module including frame padding and trajectory padding, the data input to the network is all
+pedestrians in the scene, not partial pedestrians whose trajectories only meet the length requirement.
+For the dynamic, the temporal multi-head attention(TMAE&TMAD) and the temporal
+multi-head interactive attention(TMIAD) are used to model motion characteristics of pedestrians
+in the temporal dimension. For the multi-agent, social multi-head attention(SMAE&SMAD)
+combined with dynamic graphs is adopted to capture the social behavior of all pedestrians in
+the scene at each moment. For the stochastic, WTST employs bi-variate Gaussian distribution
+to sample the potential paths of pedestrians. The WTST consists of embedding layer, encoder
+layers, decoder layers and output layer. The embedding layer performs attention encoding for
+SE-ResNet in both temporal and social dimensions. The encoder and decoder layers include
+attention layers and feed forward layers, and masking techniques are introduced to eliminate
+the effect of world padding. The output layer outputs the parameter information required by
+the bi-variate Gaussian distribution through dimension transformation.Finally, the WTST and
+baseline model are extensively experimented on the benchmark, and the overall performance of
+WTST is improved by 13.16% and 13.70%. Ablation experiments find that the world module
+improves performance slightly, while temporal modeling and social modeling have a significant
+impact on prediction performance. Quantitative analysis shows that the masking technique can
+weaken the motion tendency of stopping pedestrians to a certain extent. In addition, WTST can
+give a plausible result for predicting pedestrian interaction behavior. Benefiting from multi-head
+attention mechanism, WTST gives different patterns of explanation in the temporal and social
+dimensions.
 
 ## Preliminary
 Before entering this project, you may need to configure the environment based on `Tensorflow2.x-gpu`.
 ```
-pip install node2vec
+pip install networkx
 ```
 
 ### Dataset
