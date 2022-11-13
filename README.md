@@ -53,7 +53,7 @@ The origin datasets are stored at [datasets](datasets), including `ETH-eth`,`ETH
 After the processing of data deal, you can get a new folder include `train.pkl`,`val.pkl`, and `test.pkl`. It is noted that for each `pkl` file, there are `9` tensors in it-->`origin observation`,`origin prediction`,`relative origin observation`,`relative origin prediction`,`non-linear`,`padding mask`,`relative obs as graph`,`adj observation`,`relative pred as graph`,`adj prediction`.
 
 ### Weight
-If you just want to inference and not train your own datasets, you can use [eval.py](eval.py), change the line `line 16` to decide which datasest you want to, change the `line 36 & line 39` weights corresponding to the data source. Finally, you can run the [eval.py](eval.py) in the treminate follow the code:
+If you just want to inference and not train your own datasets, the weights and the graph of netwrok are stored in [ckpt](ckpt). you can use [eval.py](eval.py), change the line `line 16` to decide which datasest you want to, change the `line 36 & line 39` weights corresponding to the data source. Finally, you can run the [eval.py](eval.py) in the treminate follow the code:
 ```
 !python eval.py
 ```
@@ -61,9 +61,9 @@ If you just want to inference and not train your own datasets, you can use [eval
 
 ## Training
 The backbone of WTST
-![image](pc/framework.png)
+![image](WTST.png)
 
-The [layer.py](layer.py) and [framework.py](framework.py) are the most important componets in this project. Moerover, You can come up with some innovative and great ideas and you can also can change the hyperparmetes in the [Hyperparameters.py](Hyperparameters.py) if you like .Before train your own datasets, you can just change the [train.py](train.py), `line 24` you can change your datasets path from [Hyperparameters.py](Hyperparameters.py), `line 53`, l2 loss is used and `line 55`, l1 loss is used if the datasets are senstive.
+The [layers.py](layers.py) and [model.py](model.py) are the most important componets in this project. Moerover, You can come up with some innovative and great ideas and you can also can change the hyperparmetes in the [hyperparameters.py](hyperparameters.py) if you like .Before train your own datasets, you can just change the [train.py](train.py), `line 23&line 24` you can change your datasets path from [hyperparameters.py](hyperparameters.py). The bi-variate Guassian distribution as a loss function, we can see at [model.py](model.py)-->`graph_loss` function.
 So you can finally train the model by running the following command:
 ```
 python train.py
@@ -74,11 +74,14 @@ You will get a new file of your own trained weights saved in `ckpt` folders.Don'
 
 
 ## Results
-The result of the NYC prediction:
+The result of the multipath sampling:
 
 
 
-![image](pc/visual.png)
+![image](pc/sto.png)
+
+The interaction between pedestrians:
+![image](pc/interactive.png)
 
 More details please see the paper!
 
