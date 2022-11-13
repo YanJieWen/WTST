@@ -7,7 +7,6 @@ Pedestrians trajectory prediction-Tensorflow  Implementation
 	- [Dataset](#dataset)
 	- [Weight](#weight)
 - [Training](#training)
-- [Testing](#testing)
 - [Results](#results)
 - [Contributing](#contributing)
 - [License](#license)
@@ -50,14 +49,18 @@ pip install networkx
 
 ### Dataset
 
-If you want to run this project, please download the datasets and weight file from  the [Google](https://drive.google.com/drive/folders/1Dcsf1Y9MIQzZ6Th9abmNb4F9mlpZ2GpV?usp=sharingy). Then put the `ckpt_pems08` and `ckpt_taxi` into the project and crate a new file folder named `data` and put `NYC_taxi` and `PEMS08` into it. You must change the folder named `NYC_taxi->NYC`. After some tossing, you can run [data_fac.py](data_fac.py) to generate data files in `pkl format` for your training and testing, which may be a long wait. The `pkl flie` consists of 5 parts->`traind data`, `validation data`, `test data`, `multi graph`, `node2vec results`, and  `inverse_transform scalar `
+The origin datasets are stored at [datasets](datasets), including `ETH-eth`,`ETH-hotel`,`UCY-univ`,`UCY-zara1`,`UCY-zara2` folders. For each folder, there are three sub-folder `train`,`val`,`test`. You can run the [data_factory.py](data_factory.py) get the pkl. Change the  `line 162` change the datasets, and change the `line 163` change the data type. The data processing program includes the `world` module, which can obtain all pedestrian motion information in each scene. 
+After the processing of data deal, you can get a new folder include `train.pkl`,`val.pkl`, and `test.pkl`. It is noted that for each `pkl` file, there are `9` tensors in it-->`origin observation`,`origin prediction`,`relative origin observation`,`relative origin prediction`,`non-linear`,`padding mask`,`relative obs as graph`,`adj observation`,`relative pred as graph`,`adj prediction`.
 
 ### Weight
-If you just want to inference and not train your own datasets, you can modify any dataset and name it `ckpt`, for example `ckpt_pems08->ckpt`
+If you just want to inference and not train your own datasets, you can use [eval.py](eval.py), change the line `line 16` to decide which datasest you want to, change the `line 36 & line 39` weights corresponding to the data source. Finally, you can run the [eval.py](eval.py) in the treminate follow the code:
+```
+!python eval.py
+```
 
 
 ## Training
-The backbone STGMT
+The backbone of WTST
 ![image](pc/framework.png)
 
 The [layer.py](layer.py) and [framework.py](framework.py) are the most important componets in this project. Moerover, You can come up with some innovative and great ideas and you can also can change the hyperparmetes in the [Hyperparameters.py](Hyperparameters.py) if you like .Before train your own datasets, you can just change the [train.py](train.py), `line 24` you can change your datasets path from [Hyperparameters.py](Hyperparameters.py), `line 53`, l2 loss is used and `line 55`, l1 loss is used if the datasets are senstive.
@@ -68,78 +71,6 @@ python train.py
 You will get a new file of your own trained weights saved in `ckpt` folders.Don't worry about getting an error, even if there are weight files in the folder, they will be overwritten during training.
 
 
-## Testing 
-If you only want to inferrence on our dataset, it doesn't matter. Take the dataset in New York as an example, PEMS08 performs the same operation
-The [test.py](test.py) is the kernel, before testing, the operation as follows
-```
-change the data path-> line 16
-change the graph name -> line 24 
-change the test epoch is up to you -> line 32
-change the data you want to save -> line 66, line 72
-python test.py
-```
-We provide three metrics: `MAE`, `RMSE`, and `SMAPE`
-
-In the end, the terminate will show the results of `3,6,9,12` steps errors and average errors of each steps. Three tables will saved into your project `multi_error_our.csv', 'pred.csv', and  `gt.csv`
-
-
-## Results
-The result of the NYC prediction:
-
-
-
-![image](pc/visual.png)
-
-More details please see the paper!
-
-## Contributing
-
-
-At last, thank you very much for the contribution of the co-author in the article, and also thank my girlfriend for giving me the courage to pursue for a Ph.d.
-
-## License
-
-[MIT](LICENSE) © YanjieWen
-
-## Preliminary
-Before entering this project, you may need to configure the environment based on `Tensorflow2.x-gpu`.
-```
-pip install node2vec
-```
-
-### Dataset
-
-If you want to run this project, please download the datasets and weight file from  the [Google](https://drive.google.com/drive/folders/1Dcsf1Y9MIQzZ6Th9abmNb4F9mlpZ2GpV?usp=sharingy). Then put the `ckpt_pems08` and `ckpt_taxi` into the project and crate a new file folder named `data` and put `NYC_taxi` and `PEMS08` into it. You must change the folder named `NYC_taxi->NYC`. After some tossing, you can run [data_fac.py](data_fac.py) to generate data files in `pkl format` for your training and testing, which may be a long wait. The `pkl flie` consists of 5 parts->`traind data`, `validation data`, `test data`, `multi graph`, `node2vec results`, and  `inverse_transform scalar `
-
-### Weight
-If you just want to inference and not train your own datasets, you can modify any dataset and name it `ckpt`, for example `ckpt_pems08->ckpt`
-
-
-## Training
-The backbone STGMT
-![image](pc/framework.png)
-
-The [layer.py](layer.py) and [framework.py](framework.py) are the most important componets in this project. Moerover, You can come up with some innovative and great ideas and you can also can change the hyperparmetes in the [Hyperparameters.py](Hyperparameters.py) if you like .Before train your own datasets, you can just change the [train.py](train.py), `line 24` you can change your datasets path from [Hyperparameters.py](Hyperparameters.py), `line 53`, l2 loss is used and `line 55`, l1 loss is used if the datasets are senstive.
-So you can finally train the model by running the following command:
-```
-python train.py
-```
-You will get a new file of your own trained weights saved in `ckpt` folders.Don't worry about getting an error, even if there are weight files in the folder, they will be overwritten during training.
-
-
-## Testing 
-If you only want to inferrence on our dataset, it doesn't matter. Take the dataset in New York as an example, PEMS08 performs the same operation
-The [test.py](test.py) is the kernel, before testing, the operation as follows
-```
-change the data path-> line 16
-change the graph name -> line 24 
-change the test epoch is up to you -> line 32
-change the data you want to save -> line 66, line 72
-python test.py
-```
-We provide three metrics: `MAE`, `RMSE`, and `SMAPE`
-
-In the end, the terminate will show the results of `3,6,9,12` steps errors and average errors of each steps. Three tables will saved into your project `multi_error_our.csv', 'pred.csv', and  `gt.csv`
 
 
 ## Results
