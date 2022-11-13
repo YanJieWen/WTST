@@ -78,10 +78,10 @@ The result of the multipath sampling:
 
 
 
-![image](pc/sto.png)
+![image](sto.png)
 
 The interaction between pedestrians:
-![image](pc/interactive.png)
+![image](interactive.png)
 
 More details please see the paper!
 
